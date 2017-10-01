@@ -207,6 +207,10 @@ class LINE extends LineAPI {
             this._sendMessage(seq, 'Mira');
         }
 
+	if(txt == 'keyword' || txt == 'help') {
+	    this._sendMessage(seq, '[Umum]\n-cancel\n-respon/response\n-speed\n-point\n-clear\n-check\n-can on/off\n-kick on/off\n-myid\n-open\n-close\n-join\n-lirik\n\n[Admin]\n-kickall\n-speedtest\n-spm\n-left');
+	}
+
         if(txt == 'speed') {
             const curTime = (Date.now() / 1000);
             await this._sendMessage(seq,'Processing....');
