@@ -49,7 +49,7 @@ class LINE extends LineAPI {
             // op1 = group nya
             // op2 = yang 'nge' kick
             // op3 = yang 'di' kick
-            if(isAdminOrBot(operation.param3)) {
+            if(!isAdminOrBot(operation.param3)) {
                 this._invite(operation.param1,[operation.param3]);
             }
             if(!isAdminOrBot(operation.param2)){
@@ -122,7 +122,7 @@ class LINE extends LineAPI {
             this.stateStatus[action] = state;
             this._sendMessage(seq,`Status: \n${JSON.stringify(this.stateStatus)}`);
         } else {
-            this._sendMessage(seq,`You Are Not Admin`);
+            this._sendMessage(seq,`Kamu bukan admin.`);
         }
     }
 
@@ -203,15 +203,15 @@ class LINE extends LineAPI {
             }
         }
 
-        if(txt == 'halo' || txt == 'sya') {
-            this._sendMessage(seq, 'halo disini tasya :)');
+        if(txt == 'response' || txt == 'respon') {
+            this._sendMessage(seq, 'Mira');
         }
 
         if(txt == 'speed') {
             const curTime = (Date.now() / 1000);
-            await this._sendMessage(seq,'processing....');
+            await this._sendMessage(seq,'Processing....');
             const rtime = (Date.now() / 1000) - curTime;
-            await this._sendMessage(seq, `${rtime} second`);
+            await this._sendMessage(seq, `${rtime} second(s)`);
         }
 
         if(txt === 'kernel') {
@@ -229,17 +229,17 @@ class LINE extends LineAPI {
             }
         }
 
-        if(txt == 'setpoint') {
-            this._sendMessage(seq, `Setpoint for check reader.`);
+        if(txt == 'point') {
+            this._sendMessage(seq, `Read point telah di set!`);
             this.removeReaderByGroup(seq.to);
         }
 
-        if(txt == 'clear') {
+        if(txt == 'reset') {
             this.checkReader = []
-            this._sendMessage(seq, `Remove all check reader on memory`);
+            this._sendMessage(seq, `Read point telah di reset!`);
         }  
 
-        if(txt == 'recheck'){
+        if(txt == 'check'){
             let rec = await this.recheck(this.checkReader,seq.to);
             const mentions = await this.mention(rec);
             seq.contentMetadata = mentions.cmddata;
@@ -251,21 +251,21 @@ class LINE extends LineAPI {
             this._sendMessage(seq,seq.contentMetadata.mid);
         }
 
-        if(txt == 'setpoint for check reader .') {
+        if(txt == 'point2') {
             this.searchReader(seq);
         }
 
-        if(txt == 'clearall') {
+        if(txt == 'clear2') {
             this.checkReader = [];
         }
 
-        const action = ['cancel on','cancel off','kick on','kick off']
+        const action = ['can on','can off','kick on','kick off']
         if(action.includes(txt)) {
             this.setState(seq)
         }
 	
         if(txt == 'myid') {
-            this._sendMessage(seq,`Your ID: ${seq.from}`);
+            this._sendMessage(seq,`MID kamu: ${seq.from}`);
         }
 
         if(txt == 'speedtest' && isAdminOrBot(seq.from)) {
@@ -274,7 +274,7 @@ class LINE extends LineAPI {
             })
         }
 
-        const joinByUrl = ['ourl','curl'];
+        const joinByUrl = ['open','close'];
         if(joinByUrl.includes(txt)) {
             this._sendMessage(seq,`Updating group ...`);
             let updateGroup = await this._getGroup(seq.to);
@@ -331,10 +331,10 @@ class LINE extends LineAPI {
                         Object.assign(seq,Obj)
                         this._sendMessage(seq,'Location');
                     } catch (err) {
-                        this._sendMessage(seq,'Not Found');
+                        this._sendMessage(seq,'_Error69');
                     }
                 } else {
-                    this._sendMessage(seq,'Location Not Found , Maybe di dalem goa');
+                    this._sendMessage(seq,'_Error96');
                 }
             })
         }
