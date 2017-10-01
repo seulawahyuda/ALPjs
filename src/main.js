@@ -204,7 +204,7 @@ class LINE extends LineAPI {
         }
 
         if(txt == 'response' || txt == 'respon') {
-            this._sendMessage(seq, 'Mira');
+            this._sendMessage(seq, 'Yuda');
         }
 
 	if(txt == 'keyword' || txt == 'help') {
