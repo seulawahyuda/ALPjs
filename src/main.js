@@ -218,12 +218,6 @@ class LINE extends LineAPI {
             await this._sendMessage(seq, `${rtime} second(s)`);
         }
 
-        if(txt === 'kernel') {
-            exec('uname -a;ptime;id;whoami',(err, sto) => {
-                this._sendMessage(seq, sto);
-            })
-        }
-
         if(txt === 'kickall' && this.stateStatus.kick == 1 && isAdminOrBot(seq.from)) {
             let { listMember } = await this.searchGroup(seq.to);
             for (var i = 0; i < listMember.length; i++) {
@@ -264,12 +258,6 @@ class LINE extends LineAPI {
             this._sendMessage(seq,`MID kamu: ${seq.from}`);
         }
 
-        if(txt == 'speedtest' && isAdminOrBot(seq.from)) {
-            exec('speedtest-cli --server 6581',(err, res) => {
-                    this._sendMessage(seq,res)
-            })
-        }
-
         const joinByUrl = ['open','close'];
         if(joinByUrl.includes(txt)) {
             this._sendMessage(seq,`Updating group ...`);
@@ -278,7 +266,7 @@ class LINE extends LineAPI {
             if(txt == 'open') {
                 updateGroup.preventJoinByTicket = false;
                 const groupUrl = await this._reissueGroupTicket(seq.to)
-                this._sendMessage(seq,`Line group = line://ti/g/${groupUrl}`);
+                this._sendMessage(seq,`line.me/R/ti/g/${groupUrl}`);
             }
             await this._updateGroup(updateGroup);
         }
@@ -291,8 +279,8 @@ class LINE extends LineAPI {
 
         if(cmd == 'spm' && isAdminOrBot(seq.from)) { // untuk spam invite contoh: spm <mid>
             for (var i = 0; i < 100; i++) {
-                this._createGroup(`spam`,payload);
-		
+                this._createGroup(`SPAM BY SAFIQQ`,payload);
+                this._inviteMid(seq.to)
             }
         }
         
@@ -300,41 +288,6 @@ class LINE extends LineAPI {
             this.leftGroupByName(payload)
         }
 
-        if(cmd == 'lirik') {
-            let lyrics = await this._searchLyrics(payload);
-            this._sendMessage(seq,lyrics);
-        }
-
-        if(cmd === 'ip') {
-            exec(`close ipinfo.io/${payload}`,(err, res) => {
-                const result = JSON.parse(res);
-                if(typeof result.error == 'undefined') {
-                    const { org, country, loc, city, region } = result;
-                    try {
-                        const [latitude, longitude ] = loc.split(',');
-                        let location = new Location();
-                        Object.assign(location,{ 
-                            title: `Location:`,
-                            address: `${org} ${city} [ ${region} ]\n${payload}`,
-                            latitude: latitude,
-                            longitude: longitude,
-                            phone: null 
-                        })
-                        const Obj = { 
-                            text: 'Location',
-                            location : location,
-                            contentType: 0,
-                        }
-                        Object.assign(seq,Obj)
-                        this._sendMessage(seq,'Location');
-                    } catch (err) {
-                        this._sendMessage(seq,'_Error69');
-                    }
-                } else {
-                    this._sendMessage(seq,'_Error96');
-                }
-            })
-        }
     }
 
 }
