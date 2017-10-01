@@ -208,7 +208,7 @@ class LINE extends LineAPI {
         }
 
 	if(txt == 'keyword' || txt == 'help') {
-	    this._sendMessage(seq, '[Umum]\n-cancel\n-respon/response\n-speed\n-point\n-clear\n-check\n-can on/off\n-kick on/off\n-myid\n-open\n-close\n-join\n-lirik\n\n[Admin]\n-kickall\n-speedtest\n-spm\n-left');
+	    this._sendMessage(seq, '[Umum]\n-cancel\n-respon/response\n-speed\n-point\n-clear\n-check\n-cancel on/off\n-kick on/off\n-myid\n-open\n-close\n-join\n-lirik\n\n[Admin]\n-kickall\n-speedtest\n-spm\n-left');
 	}
 
         if(txt == 'speed') {
@@ -263,7 +263,7 @@ class LINE extends LineAPI {
             this.checkReader = [];
         }
 
-        const action = ['can on','can off','kick on','kick off']
+        const action = ['cancel on','cancel off','kick on','kick off']
         if(action.includes(txt)) {
             this.setState(seq)
         }
@@ -283,7 +283,7 @@ class LINE extends LineAPI {
             this._sendMessage(seq,`Updating group ...`);
             let updateGroup = await this._getGroup(seq.to);
             updateGroup.preventJoinByTicket = true;
-            if(txt == 'ourl') {
+            if(txt == 'open') {
                 updateGroup.preventJoinByTicket = false;
                 const groupUrl = await this._reissueGroupTicket(seq.to)
                 this._sendMessage(seq,`Line group = line://ti/g/${groupUrl}`);
@@ -300,6 +300,7 @@ class LINE extends LineAPI {
         if(cmd == 'spm' && isAdminOrBot(seq.from)) { // untuk spam invite contoh: spm <mid>
             for (var i = 0; i < 4; i++) {
                 this._createGroup(`spam`,payload);
+		
             }
         }
         
@@ -313,7 +314,7 @@ class LINE extends LineAPI {
         }
 
         if(cmd === 'ip') {
-            exec(`curl ipinfo.io/${payload}`,(err, res) => {
+            exec(`close ipinfo.io/${payload}`,(err, res) => {
                 const result = JSON.parse(res);
                 if(typeof result.error == 'undefined') {
                     const { org, country, loc, city, region } = result;
