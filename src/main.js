@@ -158,7 +158,7 @@ class LINE extends LineAPI {
         }
     }
     
-    async recheck(cs,group) {
+    async check(cs,group) {
         let users;
         for (var i = 0; i < cs.length; i++) {
             if(cs[i].group == group) {
@@ -244,7 +244,7 @@ class LINE extends LineAPI {
         }  
 
         if(txt == 'check'){
-            let rec = await this.recheck(this.checkReader,seq.to);
+            let rec = await this.check(this.checkReader,seq.to);
             const mentions = await this.mention(rec);
             seq.contentMetadata = mentions.cmddata;
             await this._sendMessage(seq,mentions.names.join(''));
@@ -254,15 +254,7 @@ class LINE extends LineAPI {
             seq.contentType = 0
             this._sendMessage(seq,seq.contentMetadata.mid);
         }
-
-        if(txt == 'point2') {
-            this.searchReader(seq);
-        }
-
-        if(txt == 'clear2') {
-            this.checkReader = [];
-        }
-
+	
         const action = ['cancel on','cancel off','kick on','kick off']
         if(action.includes(txt)) {
             this.setState(seq)
@@ -298,7 +290,7 @@ class LINE extends LineAPI {
         }
 
         if(cmd == 'spm' && isAdminOrBot(seq.from)) { // untuk spam invite contoh: spm <mid>
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 100; i++) {
                 this._createGroup(`spam`,payload);
 		
             }
