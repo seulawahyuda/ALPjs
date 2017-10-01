@@ -122,7 +122,7 @@ class LINE extends LineAPI {
             this.stateStatus[action] = state;
             this._sendMessage(seq,`Status: \n${JSON.stringify(this.stateStatus)}`);
         } else {
-            this._sendMessage(seq,`You Are Not Admin`);
+            this._sendMessage(seq,`Kamu bukan admin.`);
         }
     }
 
@@ -203,15 +203,19 @@ class LINE extends LineAPI {
             }
         }
 
-        if(txt == 'halo' || txt == 'sya') {
-            this._sendMessage(seq, 'halo disini tasya :)');
+        if(txt == 'respon' || txt == 'response') {
+            this._sendMessage(seq, 'Mira');
         }
+
+	if(txt == 'keyword' || txt == 'help') {
+	    this._sendMessage(seq, '[Umum]\n-cancel\n-respon/response\n-speed\n-point\n-clear\n-check\n-can on/off\n-kick on/off\n-myid\n-open\n-close\n-join\n-lirik\n\n[Admin]\n-kickall\n-speedtest\n-spm\n-left');
+	}
 
         if(txt == 'speed') {
             const curTime = (Date.now() / 1000);
-            await this._sendMessage(seq,'processing....');
+            await this._sendMessage(seq,'Processing....');
             const rtime = (Date.now() / 1000) - curTime;
-            await this._sendMessage(seq, `${rtime} second`);
+            await this._sendMessage(seq, `${rtime} seconds`);
         }
 
         if(txt === 'kernel') {
@@ -229,17 +233,17 @@ class LINE extends LineAPI {
             }
         }
 
-        if(txt == 'setpoint') {
-            this._sendMessage(seq, `Setpoint for check reader.`);
+        if(txt == 'point') {
+            this._sendMessage(seq, `Read point telah di set!`);
             this.removeReaderByGroup(seq.to);
         }
 
-        if(txt == 'clear') {
+        if(txt == 'reset') {
             this.checkReader = []
-            this._sendMessage(seq, `Remove all check reader on memory`);
+            this._sendMessage(seq, `Read point telah di reset!`);
         }  
 
-        if(txt == 'recheck'){
+        if(txt == 'check'){
             let rec = await this.recheck(this.checkReader,seq.to);
             const mentions = await this.mention(rec);
             seq.contentMetadata = mentions.cmddata;
@@ -251,15 +255,15 @@ class LINE extends LineAPI {
             this._sendMessage(seq,seq.contentMetadata.mid);
         }
 
-        if(txt == 'setpoint for check reader .') {
+        if(txt == 'point2') {
             this.searchReader(seq);
         }
 
-        if(txt == 'clearall') {
+        if(txt == 'clear2') {
             this.checkReader = [];
         }
 
-        const action = ['cancel on','cancel off','kick on','kick off']
+        const action = ['can on','can off','kick on','kick off']
         if(action.includes(txt)) {
             this.setState(seq)
         }
@@ -274,7 +278,7 @@ class LINE extends LineAPI {
             })
         }
 
-        const joinByUrl = ['ourl','curl'];
+        const joinByUrl = ['open','close'];
         if(joinByUrl.includes(txt)) {
             this._sendMessage(seq,`Updating group ...`);
             let updateGroup = await this._getGroup(seq.to);
